@@ -1,0 +1,16 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: meatika-api-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: meatika_db
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - 3306:3306
+    volumes:
+      - meatika_mysql_data:/var/lib/mysql
+
+volumes:
+  meatika_mysql_data:
