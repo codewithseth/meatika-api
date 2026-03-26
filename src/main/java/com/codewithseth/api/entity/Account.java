@@ -35,11 +35,11 @@ public class Account {
     private AccountType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "is_active", nullable = false, insertable = false)
     private BooleanFlag isActive;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "two_fa_enabled", nullable = false)
+    @Column(name = "two_fa_enabled", nullable = false, insertable = false)
     private BooleanFlag twoFaEnabled;
 
     @Column(name = "two_fa_secret", length = 250)

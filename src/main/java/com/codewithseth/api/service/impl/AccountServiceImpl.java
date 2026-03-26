@@ -43,9 +43,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountDto getAccountById(Integer id) {
-        Account account = accountRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("USER", "ID", id.toString())
-        );
+        Account account = getAccountEntityById(id);
 
         return new AccountDto(
             account.getId(),
@@ -70,9 +68,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public void updateAccount(Integer id, AccountReqDto accountReqDto) {
-        Account account = accountRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("USER", "ID", id.toString())
-        );
+        Account account = getAccountEntityById(id);
 
         account.setUsername(accountReqDto.username());
         account.setPassword(accountReqDto.password());
@@ -83,10 +79,15 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public void deleteAccount(Integer id) {
-        Account account = accountRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("USER", "ID", id.toString())
-        );
+        Account account = getAccountEntityById(id);
         accountRepository.delete(account);
+    }
+
+    private Account getAccountEntityById(Integer id) {
+        Account account = accountRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("ACCOUNT", "ID", id.toString())
+        );
+        return account;
     }
 
 }
