@@ -47,8 +47,8 @@ public class Role extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "role_permissions",
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "permission_id")
+        joinColumns = @JoinColumn(name = "role_uuid", referencedColumnName = "uuid"),
+        inverseJoinColumns = @JoinColumn(name = "permission_uuid", referencedColumnName = "uuid")
     )
     private Set<Permission> permissions = new LinkedHashSet<Permission>();
 
