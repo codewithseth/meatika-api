@@ -1,5 +1,8 @@
 package com.codewithseth.api.entity;
 
+import com.codewithseth.api.dto.enums.AccountType;
+import com.codewithseth.api.dto.enums.BooleanFlag;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,6 +1,6 @@
 package com.codewithseth.api.dto;
 
-import com.codewithseth.api.entity.AccountType;
+import com.codewithseth.api.dto.enums.AccountType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
