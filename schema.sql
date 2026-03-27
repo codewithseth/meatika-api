@@ -45,3 +45,23 @@ CREATE TABLE IF NOT EXISTS role_permissions (
     FOREIGN KEY (role_uuid) REFERENCES roles(uuid) ON DELETE CASCADE,
     FOREIGN KEY (permission_uuid) REFERENCES permissions(uuid) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    uuid VARCHAR(50) NOT NULL UNIQUE,
+    account_uuid VARCHAR(50) NOT NULL,
+    role_uuid VARCHAR(50),
+    last_name_en VARCHAR(50) NOT NULL,
+    last_name_km VARCHAR(50) NOT NULL,
+    first_name_en VARCHAR(50) NOT NULL,
+    first_name_km VARCHAR(50) NOT NULL,
+    gender ENUM ('MALE', 'FEMALE') NOT NULL,
+    dob DATE NOT NULL,
+    notification_unread INT DEFAULT 0 NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(50) NOT NULL,
+    updated_at TIMESTAMP,
+    updated_by VARCHAR(50),
+    FOREIGN KEY (account_uuid) REFERENCES accounts(uuid) ON DELETE CASCADE,
+    FOREIGN KEY (role_uuid) REFERENCES roles(uuid) ON DELETE SET NULL
+);
