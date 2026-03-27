@@ -1,10 +1,14 @@
 package com.codewithseth.api.entity;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,5 +40,8 @@ public class Permission extends BaseEntity {
 
     @Column(name = "group_name_km", nullable = false, length = 50)
     private String groupNameKm;
+
+    @ManyToMany(mappedBy = "permissions")
+    private Set<Role> roles = new LinkedHashSet<Role>();
 
 }
