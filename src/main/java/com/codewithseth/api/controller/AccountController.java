@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codewithseth.api.dto.account.AccountDto;
 import com.codewithseth.api.dto.account.AccountReqDto;
 import com.codewithseth.api.service.IAccountService;
+import com.codewithseth.api.system.ResultResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,10 @@ public class AccountController {
     private final IAccountService iAccountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountDto>> findAllAccounts() {
+    public ResponseEntity<ResultResponse> findAllAccounts() {
         List<AccountDto> accounts = iAccountService.getAllAccounts();
-        return ResponseEntity.ok(accounts);
+        ResultResponse response = new ResultResponse(true, 200, "Accounts retrieved successfully", accounts);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
