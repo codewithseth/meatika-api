@@ -1,6 +1,5 @@
 package com.codewithseth.api.exception;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +11,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
-import com.codewithseth.api.dto.ErrorResponse;
+import com.codewithseth.api.system.ResultResponse;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -23,33 +21,32 @@ import jakarta.validation.ConstraintViolationException;
 public class GlobalExceptionHandler {
     
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = new ErrorResponse(
-            webRequest.getDescription(false),
-            HttpStatus.NOT_FOUND,
-            exception.getMessage(),
-            LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResultResponse> handleResourceNotFoundException(ResourceNotFoundException exception) {
+        ResultResponse response = new ResultResponse(false, 404, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ResultResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
+
         List<FieldError> fieldErrorList = exception.getBindingResult().getFieldErrors();
         fieldErrorList.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
+
+        ResultResponse response = new ResultResponse(false, 400, "Validation failed", errors);
+        return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<ResultResponse> handleConstraintViolationException(ConstraintViolationException exception) {
         Map<String, String> errors = new HashMap<>();
         Set<ConstraintViolation<?>> constraintViolationSet = exception.getConstraintViolations();
         constraintViolationSet.forEach(constraintViolation ->
             errors.put(constraintViolation.getPropertyPath().toString(),
             constraintViolation.getMessage())
         );
-        return ResponseEntity.badRequest().body(errors);
+        ResultResponse response = new ResultResponse(false, 400, "Validation failed", errors);
+        return ResponseEntity.badRequest().body(response);
     }
 
 }
