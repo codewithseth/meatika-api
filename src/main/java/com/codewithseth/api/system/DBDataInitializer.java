@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.codewithseth.api.dto.enums.AccountType;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class DBDataInitializer implements CommandLineRunner {
 
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PermissionRepository permissionRepository;
@@ -39,7 +41,7 @@ public class DBDataInitializer implements CommandLineRunner {
         Account rootAccount = new Account();
         rootAccount.setUuid(UUID.randomUUID().toString());
         rootAccount.setUsername("root");
-        rootAccount.setPassword("rootpassword");
+        rootAccount.setPassword(passwordEncoder.encode("rootpassword"));
         rootAccount.setType(AccountType.KH_USER);
         rootAccount.setIsActive(BooleanFlag.T);
         accountRepository.save(rootAccount);

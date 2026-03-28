@@ -2,8 +2,8 @@ package com.codewithseth.api.service;
 
 import java.util.List;
 
-import com.codewithseth.api.dto.AccountDto;
-import com.codewithseth.api.dto.AccountReqDto;
+import com.codewithseth.api.dto.account.AccountDto;
+import com.codewithseth.api.dto.account.AccountReqDto;
 
 public interface IAccountService {
     List<AccountDto> getAllAccounts();

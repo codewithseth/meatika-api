@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codewithseth.api.dto.AccountDto;
-import com.codewithseth.api.dto.AccountReqDto;
+import com.codewithseth.api.dto.account.AccountDto;
+import com.codewithseth.api.dto.account.AccountReqDto;
 import com.codewithseth.api.service.IAccountService;
 
 import jakarta.validation.Valid;

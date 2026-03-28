@@ -38,7 +38,7 @@ public class Account {
     private AccountType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active", nullable = false, insertable = false)
+    @Column(name = "is_active", nullable = false)
     private BooleanFlag isActive;
 
     @Enumerated(EnumType.STRING)

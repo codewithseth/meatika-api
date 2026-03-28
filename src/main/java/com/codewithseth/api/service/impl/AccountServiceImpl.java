@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.codewithseth.api.dto.AccountDto;
-import com.codewithseth.api.dto.AccountReqDto;
+import com.codewithseth.api.dto.account.AccountDto;
+import com.codewithseth.api.dto.account.AccountReqDto;
 import com.codewithseth.api.entity.Account;
 import com.codewithseth.api.exception.ResourceNotFoundException;
 import com.codewithseth.api.repository.AccountRepository;
