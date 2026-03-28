@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.codewithseth.api.dto.auth.LoginReqDto;
+import com.codewithseth.api.dto.enums.AccountType;
 import com.codewithseth.api.entity.Account;
 import com.codewithseth.api.repository.AccountRepository;
 
@@ -26,11 +28,13 @@ public class UsernamePwdAuthProvider implements AuthenticationProvider {
 
     @Override
     public @Nullable Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String username = auth.getName();
+        LoginReqDto loginReqDto = (LoginReqDto) auth.getPrincipal();
+        AccountType type = loginReqDto.type();
+        String username = loginReqDto.username();
         String password = auth.getCredentials().toString();
 
-        // Check if account with the given username exists
-        Account account = accountRepository.findByUsername(username).orElseThrow(
+        // Check if account with the given username and type exists
+        Account account = accountRepository.findByUsernameAndType(username, type).orElseThrow(
             () -> new UsernameNotFoundException(String.format("Account with username %s not found", username))
         );
 

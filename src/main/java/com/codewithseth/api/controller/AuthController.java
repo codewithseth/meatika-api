@@ -34,7 +34,7 @@ public class AuthController {
     public ResponseEntity<?> loginAccount(@Valid @RequestBody LoginReqDto loginReqDto) {
         try {
             Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginReqDto.username(), loginReqDto.password())
+                new UsernamePasswordAuthenticationToken(loginReqDto, loginReqDto.password())
             );
 
             String jwtToken = jwtUtil.generateJwtToken(authenticate);
