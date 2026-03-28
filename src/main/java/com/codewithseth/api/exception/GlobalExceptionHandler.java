@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +49,12 @@ public class GlobalExceptionHandler {
         );
         ResultResponse response = new ResultResponse(false, 400, "Validation failed", errors);
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
+    public ResponseEntity<ResultResponse> handleAuthenticationExceptions(Exception exception) {
+        ResultResponse response = new ResultResponse(false, 401, "username or password is incorrect", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
 }
