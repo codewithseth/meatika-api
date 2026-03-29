@@ -31,12 +31,12 @@ public class AuthController {
             new UsernamePasswordAuthenticationToken(loginReqDto, loginReqDto.password())
         );
 
-        String jwtToken = jwtUtil.generateJwtToken(authenticate);
+        String accessToken = jwtUtil.generateJwtToken(authenticate);
 
-        LoginDto loginDto = new LoginDto(jwtToken);
-
+        LoginDto loginDto = new LoginDto(accessToken);
         ResultResponse response = new ResultResponse(true, 200, "Login successful", loginDto);
+
         return ResponseEntity.ok(response);
     }
 
-} 
+}
