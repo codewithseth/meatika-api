@@ -27,15 +27,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResultResponse> loginAccount(@Valid @RequestBody LoginReqDto loginReqDto) {
+        // Authenticate the user using the provided credentials
         Authentication authenticate = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginReqDto, loginReqDto.password())
         );
 
+        // Generate a JWT token for the authenticated user
         String accessToken = jwtUtil.generateJwtToken(authenticate);
 
+        // Create a response containing the access token and return it to the client
         LoginDto loginDto = new LoginDto(accessToken);
         ResultResponse response = new ResultResponse(true, 200, "Login successful", loginDto);
-
         return ResponseEntity.ok(response);
     }
 
