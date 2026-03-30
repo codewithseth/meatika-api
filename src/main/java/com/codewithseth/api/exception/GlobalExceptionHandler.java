@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
     public ResponseEntity<ResultResponse> handleAuthenticationExceptions(Exception exception) {
-        ResultResponse response = new ResultResponse(false, 401, "Username or password is incorrect", exception.getMessage());
+        ResultResponse response = new ResultResponse(false, 401, "Account username or password is incorrect", exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 

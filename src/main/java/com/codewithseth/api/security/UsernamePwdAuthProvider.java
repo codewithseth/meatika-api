@@ -35,7 +35,9 @@ public class UsernamePwdAuthProvider implements AuthenticationProvider {
 
         // Check if account with the given username and type exists
         Account account = accountRepository.findByUsernameAndType(username, type).orElseThrow(
-            () -> new UsernameNotFoundException(String.format("Account with username '%s' and type '%s' not found", username, type))
+            () -> new UsernameNotFoundException(
+                String.format("Resource '%s' not found with %s : '%s'", "Account", "username and type", username + " and " + type)
+            )
         );
 
         // Check if account is active
