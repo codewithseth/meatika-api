@@ -38,7 +38,6 @@ public class SecurityConfig {
             .addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/accounts/**").hasRole("ADMIN") // testing 403 purpose
                 .anyRequest().authenticated()
             ).exceptionHandling(exception -> exception
                 .accessDeniedHandler((req, res, ex) -> {

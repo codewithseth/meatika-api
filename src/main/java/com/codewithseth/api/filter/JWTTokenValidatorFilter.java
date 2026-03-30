@@ -12,7 +12,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +27,6 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
@@ -58,29 +56,10 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-            } catch (ExpiredJwtException exception) {
-                log.error("JWT token has expired: {}", exception.getMessage());
-                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
-                return;
-            } catch (UnsupportedJwtException exception) {
-                log.error("Unsupported JWT token: {}", exception.getMessage());
-                sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
-                return;
-            } catch (MalformedJwtException exception) {
-                log.error("Malformed JWT token: {}", exception.getMessage()); // tested
-                sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
-                return;
-            } catch (SignatureException exception) {
-                log.error("Invalid JWT signature: {}", exception.getMessage()); //tested
-                sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
-                return;
-
-            } catch (IllegalArgumentException exception) {
-                log.error("JWT token is null or empty: {}", exception.getMessage());
+            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException exception) {
                 sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, exception.getMessage());
                 return;
             } catch (Exception exception) {
-                log.error("Error validating JWT token: {}", exception.getMessage());
                 sendErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, exception.getMessage());
                 return;
             }
@@ -97,14 +76,14 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                path.startsWith("/swagger-ui");
     }
 
-    private static final String ERROR_MESSAGE = "An error occurred while validating the JWT token";
     private void sendErrorResponse(HttpServletResponse response, int code, String data) throws IOException {
+        String errMsg = "An error occurred while validating the JWT token";
         response.setStatus(code);
         response.setContentType("application/json");
         
         String jsonResponse = String.format(
             "{\"flag\": false, \"code\": %d, \"message\": \"%s\", \"data\": \"%s\"}", 
-            code, ERROR_MESSAGE, data
+            code, errMsg, data
         );
 
         response.getWriter().write(jsonResponse);
