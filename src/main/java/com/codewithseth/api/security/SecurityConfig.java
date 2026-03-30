@@ -20,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.codewithseth.api.filter.JWTTokenValidatorFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -37,8 +38,16 @@ public class SecurityConfig {
             .addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/accounts/**").hasRole("ADMIN") // testing 403 purpose
                 .anyRequest().authenticated()
-            ).build();
+            ).exceptionHandling(exception -> exception
+                .accessDeniedHandler((req, res, ex) -> {
+                    res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    res.setContentType("application/json");
+                    res.getWriter().write("{\"flag\": false, \"code\": 403, \"message\": \"Access Denied\"}");
+                })
+            )
+            .build();
     }
 
     @Bean
