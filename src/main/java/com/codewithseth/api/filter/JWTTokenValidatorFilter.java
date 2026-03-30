@@ -108,7 +108,6 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
         );
 
         response.getWriter().write(jsonResponse);
-
     }
 
 }
